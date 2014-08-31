@@ -27,7 +27,8 @@
 
 - (void)addObserver:(id<NPLRemoteNotificationObserver>)observer forNotificationClass:(Class)notificationClass;
 - (void)removeObserver:(id<NPLRemoteNotificationObserver>)observer forNotificationClass:(Class)notificationClass;
+- (void)removeObserver:(id<NPLRemoteNotificationObserver>)observer;
 
-- (void)handleNotificationWithUserInfo:(NSDictionary *)userInfo;
+- (BOOL)handleNotificationWithUserInfo:(NSDictionary *)userInfo;
 
 @end

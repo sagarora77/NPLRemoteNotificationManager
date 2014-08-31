@@ -68,13 +68,21 @@
 {
     NSHashTable *observers = [self observersForClass:notificationClass];
     [observers addObject:observer];
-    printf("Num observers: %d\n", (int)observers.count);
 }
 
 - (void)removeObserver:(id<NPLRemoteNotificationObserver>)observer forNotificationClass:(Class)notificationClass
 {
     NSHashTable *observers = [self observersForClass:notificationClass];
     [observers removeObject:observer];
+}
+
+- (void)removeObserver:(id<NPLRemoteNotificationObserver>)observer
+{
+    NSArray *tables = [[self classes] allValues];
+
+    for (NSHashTable *observers in tables) {
+        [observers removeObject:observer];
+    }
 }
 
 #pragma mark - notification handling
@@ -97,25 +105,34 @@
     return klass;
 }
 
-- (void)handleNotificationWithUserInfo:(NSDictionary *)userInfo
+- (BOOL)handleNotificationWithUserInfo:(NSDictionary *)userInfo
 {
     Class c = [self classForUserInfo:userInfo];
     
-    NSHashTable *observers = [self observersForClass:c];
-    
-    NSArray *allObservers = [observers allObjects];
-    
-    NPLRemoteNotification *notification = [c notificationWithUserInfo:userInfo];
-    
-    dispatch_apply([allObservers count], dispatch_get_main_queue(), ^(size_t i){
+    if (c) {
+        NSHashTable *observers = [self observersForClass:c];
         
-        id<NPLRemoteNotificationObserver> observer = [allObservers objectAtIndex:i];
+        NSArray *allObservers = [observers allObjects];
         
-        if ([observer respondsToSelector:@selector(notificationManager:receivedNotification:)]) {
-            [observer notificationManager:self receivedNotification:notification];
-        }
+        NPLRemoteNotification *notification = [c notificationWithUserInfo:userInfo];
         
-    });
+        dispatch_apply([allObservers count], dispatch_get_main_queue(), ^(size_t i){
+            
+            id<NPLRemoteNotificationObserver> observer = [allObservers objectAtIndex:i];
+            
+            if ([observer respondsToSelector:@selector(notificationManager:receivedNotification:)]) {
+                [observer notificationManager:self receivedNotification:notification];
+            }
+            
+        });
+        
+        return YES;
+    }
+    else {
+        
+        return NO;
+        
+    }
 }
 
 @end
