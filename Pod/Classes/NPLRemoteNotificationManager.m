@@ -92,7 +92,8 @@
     
     NSArray *classes = [[self classes] allKeys];
     
-    for (Class c in classes) {
+    for (NSString *className in classes) {
+        Class c = NSClassFromString(className);
         NSUInteger matches = [c matchingKeyPathCountForUserInfo:userInfo];
         if (matches > count) {
             count = matches;
