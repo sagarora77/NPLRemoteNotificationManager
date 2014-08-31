@@ -15,7 +15,7 @@
 
 @optional
 
-- (void)notificationManager:(NPLRemoteNotificationManager *)manager receivedNotification:(NPLRemoteNotification *)notification;
+- (void)notificationManager:(NPLRemoteNotificationManager *)manager receivedNotification:(NPLRemoteNotification *)notification applicationState:(UIApplicationState)applicationState;
 
 @end
 
@@ -29,6 +29,6 @@
 - (void)removeObserver:(id<NPLRemoteNotificationObserver>)observer forNotificationClass:(Class)notificationClass;
 - (void)removeObserver:(id<NPLRemoteNotificationObserver>)observer;
 
-- (BOOL)handleNotificationWithUserInfo:(NSDictionary *)userInfo;
+- (BOOL)handleNotificationWithUserInfo:(NSDictionary *)userInfo applicationState:(UIApplicationState)applicationState;
 
 @end

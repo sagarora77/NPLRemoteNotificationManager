@@ -105,7 +105,7 @@
     return klass;
 }
 
-- (BOOL)handleNotificationWithUserInfo:(NSDictionary *)userInfo
+- (BOOL)handleNotificationWithUserInfo:(NSDictionary *)userInfo applicationState:(UIApplicationState)applicationState
 {
     Class c = [self classForUserInfo:userInfo];
     
@@ -120,8 +120,8 @@
             
             id<NPLRemoteNotificationObserver> observer = [allObservers objectAtIndex:i];
             
-            if ([observer respondsToSelector:@selector(notificationManager:receivedNotification:)]) {
-                [observer notificationManager:self receivedNotification:notification];
+            if ([observer respondsToSelector:@selector(notificationManager:receivedNotification:applicationState:)]) {
+                [observer notificationManager:self receivedNotification:notification applicationState:applicationState];
             }
             
         });
