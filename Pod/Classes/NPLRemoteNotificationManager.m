@@ -45,15 +45,13 @@
 
 - (void)registerNotificationClass:(Class)notificationClass
 {
-    BOOL valid = [notificationClass isSubclassOfClass:[NPLRemoteNotification class]] && !(notificationClass == [NPLRemoteNotification class]);
+    NSAssert([notificationClass isSubclassOfClass:[NPLRemoteNotification class]] && !(notificationClass == [NPLRemoteNotification class]), @"notificationClass must be a subclass of NPLRemoteNotification");
     
-    NSAssert(valid, @"notificationClass must be a subclass of NPLRemoteNotification");
-    
-    BOOL exists = [[self classes] objectForKey:notificationClass] != nil;
+    BOOL exists = [[self classes] objectForKey:NSStringFromClass(notificationClass)] != nil;
     
     if (!exists) {
         NSHashTable *observers = [NSHashTable weakObjectsHashTable];
-        [[self classes] setObject:observers forKey:notificationClass];
+        [[self classes] setObject:observers forKey:NSStringFromClass(notificationClass)];
     }
 }
 
@@ -61,7 +59,7 @@
 
 - (NSHashTable *)observersForClass:(Class)class
 {
-    return [[self classes] objectForKey:class];
+    return [[self classes] objectForKey:NSStringFromClass(class)];
 }
 
 - (void)addObserver:(id<NPLRemoteNotificationObserver>)observer forNotificationClass:(Class)notificationClass
