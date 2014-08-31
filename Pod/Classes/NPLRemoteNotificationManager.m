@@ -109,21 +109,18 @@
     Class c = [self classForUserInfo:userInfo];
     
     if (c) {
-        NSHashTable *observers = [self observersForClass:c];
         
-        NSArray *allObservers = [observers allObjects];
+        NSHashTable *observers = [self observersForClass:c];
         
         NPLRemoteNotification *notification = [c notificationWithUserInfo:userInfo];
         
-        dispatch_apply([allObservers count], dispatch_get_main_queue(), ^(size_t i){
-            
-            id<NPLRemoteNotificationObserver> observer = [allObservers objectAtIndex:i];
-            
+        for (id<NPLRemoteNotificationObserver> observer in observers) {
             if ([observer respondsToSelector:@selector(notificationManager:receivedNotification:applicationState:)]) {
-                [observer notificationManager:self receivedNotification:notification applicationState:applicationState];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [observer notificationManager:self receivedNotification:notification applicationState:applicationState];
+                });
             }
-            
-        });
+        }
         
         return YES;
     }
