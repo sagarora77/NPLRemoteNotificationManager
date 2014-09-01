@@ -30,5 +30,6 @@
 - (void)removeObserver:(id<NPLRemoteNotificationObserver>)observer;
 
 - (BOOL)handleNotificationWithUserInfo:(NSDictionary *)userInfo applicationState:(UIApplicationState)applicationState;
+- (BOOL)handleNotificationWithUserInfo:(NSDictionary *)userInfo fetchCompletionHandler:(void(^)(UIBackgroundFetchResult))fetchCompletionHandler applicationState:(UIApplicationState)applicationState;
 
 @end

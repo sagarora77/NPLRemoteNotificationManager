@@ -11,6 +11,12 @@
 @interface NPLRemoteNotification : MTLModel
 
 /**
+ * The background fetch handler may be stored here.
+ * Ensure that only one of your observers calls it should you choose to implement background updates.
+ */
+@property (nonatomic, copy) void(^backgroundFetchHandler)(UIBackgroundFetchResult);
+
+/**
  * Override this method in subclasses of NPLRemoteNotification.  The default implementation returns the empty dictionary.
  */
 + (NSDictionary *)keyPathsToNotificationKeys;

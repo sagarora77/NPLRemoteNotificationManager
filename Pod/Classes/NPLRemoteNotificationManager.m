@@ -106,6 +106,11 @@
 
 - (BOOL)handleNotificationWithUserInfo:(NSDictionary *)userInfo applicationState:(UIApplicationState)applicationState
 {
+    [self handleNotificationWithUserInfo:userInfo fetchCompletionHandler:nil applicationState:applicationState];
+}
+
+- (BOOL)handleNotificationWithUserInfo:(NSDictionary *)userInfo fetchCompletionHandler:(void(^)(UIBackgroundFetchResult))fetchCompletionHandler applicationState:(UIApplicationState)applicationState
+{
     Class c = [self classForUserInfo:userInfo];
     
     if (c) {
@@ -113,6 +118,8 @@
         NSHashTable *observers = [self observersForClass:c];
         
         NPLRemoteNotification *notification = [c notificationWithUserInfo:userInfo];
+        
+        [notification setBackgroundFetchHandler:fetchCompletionHandler];
         
         for (id<NPLRemoteNotificationObserver> observer in observers) {
             if ([observer respondsToSelector:@selector(notificationManager:receivedNotification:applicationState:)]) {

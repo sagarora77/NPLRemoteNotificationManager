@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "NPLRemoteNotificationManager"
-  s.version          = "1.0.2"
+  s.version          = "1.0.3"
   s.summary          = "An easier way to handle push notification logic around your app."
   s.homepage         = "https://github.com/nickplee/NPLRemoteNotificationManager"
   s.license          = 'MIT'
