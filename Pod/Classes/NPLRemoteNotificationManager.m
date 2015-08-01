@@ -106,7 +106,7 @@
 
 - (BOOL)handleNotificationWithUserInfo:(NSDictionary *)userInfo applicationState:(UIApplicationState)applicationState
 {
-    [self handleNotificationWithUserInfo:userInfo fetchCompletionHandler:nil applicationState:applicationState];
+    return [self handleNotificationWithUserInfo:userInfo fetchCompletionHandler:nil applicationState:applicationState];
 }
 
 - (BOOL)handleNotificationWithUserInfo:(NSDictionary *)userInfo fetchCompletionHandler:(void(^)(UIBackgroundFetchResult))fetchCompletionHandler applicationState:(UIApplicationState)applicationState
